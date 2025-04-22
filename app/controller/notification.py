@@ -3,10 +3,16 @@ from bson import json_util, ObjectId
 from app.management.config import database
 import datetime
 
+# def fetch_notif():
+#     notification = list(database.notification_collection.find().sort("timestamp", -1))
+#     response = Response(json_util.dumps(notification), mimetype='application/json')
+#     return response, 200
+
 def fetch_notif():
-    notification = list(database.notification_collection.find().sort("timestamp", -1))
+    notification = list(database.notification_collection.find().sort("timestamp", -1).limit(50))
     response = Response(json_util.dumps(notification), mimetype='application/json')
     return response, 200
+
 
 def record_notif_data():
     data = request.json
