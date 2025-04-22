@@ -23,7 +23,7 @@ def record_notif_data():
 def update_notif_data():
     data = request.json
     query = {"_id": ObjectId(data["id"])}
-    notification = {"$set": {"status": data["status"]}, "$currentDate": {"lastModified": True}}
+    notification = {"$set": {"data.status": data["status"]}, "$currentDate": {"lastModified": True}}
     database.notification_collection.update_one(query, notification)
     return jsonify({"message": "Notification updated successfully"}), 201
 
