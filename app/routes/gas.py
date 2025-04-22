@@ -22,3 +22,11 @@ def create_notification(): return notification.record_notif_data()
 @protected_route
 @handle_errors
 def get_notifications(): return notification.fetch_notif()
+
+@gas_bp.route('/notification', methods=['DELETE'], endpoint='delete_notification')
+@handle_errors
+def delete_notification(): return notification.delete_notif()
+
+@gas_bp.route('/notification', methods=['PUT'], endpoint='update_notification')
+@handle_errors
+def update_notification(): return notification.update_notif_data()

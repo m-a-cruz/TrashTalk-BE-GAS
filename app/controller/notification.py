@@ -26,3 +26,9 @@ def update_notif_data():
     notification = {"$set": {"status": data["status"]}, "$currentDate": {"lastModified": True}}
     database.notification_collection.update_one(query, notification)
     return jsonify({"message": "Notification updated successfully"}), 201
+
+def delete_notif():
+    data = request.json
+    query = {"_id": ObjectId(data["id"])}
+    database.notification_collection.delete_one(query)
+    return jsonify({"message": "Notification deleted successfully"}), 200
