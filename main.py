@@ -32,7 +32,9 @@ app.config["MAIL_PASSWORD"] = AppConfig.MAIL_PASSWORD
 
 jwt = JWTManager(app)
 mail = Mail(app)
-CORS(app, origins=["https://trash-talk-fe-git-main-mndlcrzs-projects.vercel.app"], supports_credentials=True)
+CORS(app, supports_credentials=True)
+# origins=["https://trash-talk-fe-git-main-mndlcrzs-projects.vercel.app"]
+
 
 @app.before_request
 def before_request(): 
