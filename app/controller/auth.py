@@ -4,6 +4,7 @@ from app.management.config import database
 import app.management.encryption as encrypt
 from flask_jwt_extended import create_access_token
 import app.management.middleware as middleware
+from app.controller.gas import store_notif
 
 def register():
     data = request.json
@@ -37,6 +38,9 @@ def login():
         samesite="None",  # Adjust based on your use case, e.g., "None" for cross-origin
         max_age=3 * 60 * 60  # Cookie expires after 3 hours
     )
+    
+    store_notif("Info", "User logged in successfully")
+    
     return response
 
 def logout():

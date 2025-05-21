@@ -13,7 +13,6 @@ def create_gas_records(): return gas.record_gas_level()
 @handle_errors
 def get_gas_chart(): return gas.fetch_gas_chart()
 
-
 @gas_bp.route('/notification', methods=['POST'], endpoint='create_notification')
 @handle_errors
 def create_notification(): return notification.record_notif_data()
