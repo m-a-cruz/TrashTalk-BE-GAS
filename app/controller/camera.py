@@ -1,6 +1,6 @@
 from flask import jsonify
 from app.management.config import database
-
+from extensions import socketio
 
 def view_latest_image():
     image = database.image_collection.find_one(sort=[("timestamp", -1)])
@@ -13,3 +13,9 @@ def view_latest_image():
         "image_raw_base64": image["image_raw_base64"],
         "image_annotated_base64": image["image_annotated_base64"]
     }), 200
+    
+def watch_changes():
+    with database.image_collection.watch() as stream:
+        for change in stream:
+            print(change)
+            socketio.emit("new_image", change["fullDocument"]) 
