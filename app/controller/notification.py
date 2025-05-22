@@ -12,7 +12,7 @@ import datetime
 
 def fetch_notif():
     notification = list(database.notification_collection.find().sort("timestamp", -1).limit(50))
-    response = Response(json_util.dumps(notification), mimetype='application/json')
+    response = json_util.dumps(notification)
     socketio.emit("notifications", response)
     return response, 200
     # return 200
