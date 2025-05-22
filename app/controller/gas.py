@@ -23,7 +23,7 @@ def fetch_gas_chart():
 
 def store_notif(type,message):
     notification = {
-        "timestamp": datetime.datetime.now(),
+        "timestamp": datetime.datetime.utcnow(),
         "data": {
             "type": type,
             "message": message,
@@ -31,4 +31,4 @@ def store_notif(type,message):
         }
     }
     database.notification_collection.insert_one(notification)
-    socketio.emit("new_notification", notification)
+    socketio.emit("new_notification", json_util.dumps(notification))
