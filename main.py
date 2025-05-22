@@ -14,7 +14,6 @@ from app.management.middleware import log_request, protected_route
 from extensions import socketio
 from app.management.config import AppConfig
 from scheduler import start_scheduler
-from threading import Thread
 
 # Initialize Flask App
 app = Flask(__name__)
@@ -61,6 +60,5 @@ app.register_blueprint(camera.camera_bp)
 
 # Start the app with SocketIO
 if __name__ == "__main__":
-    Thread(target=watch_changes, daemon=True).start()
     start_scheduler()  # Enable if needed
     socketio.run(app, host="0.0.0.0", port=5000, debug=True)

@@ -14,8 +14,3 @@ def view_latest_image():
         "image_annotated_base64": image["image_annotated_base64"]
     }), 200
     
-def watch_changes():
-    with database.image_collection.watch() as stream:
-        for change in stream:
-            print(change)
-            socketio.emit("new_image", change["fullDocument"]) 
