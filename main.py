@@ -9,7 +9,6 @@ from os.path import abspath, dirname
 sys.path.append(abspath(dirname(__file__)))
 
 from app.routes import auth, gas, insight, camera
-from app.controller.camera import watch_changes
 from app.management.middleware import log_request, protected_route
 from extensions import socketio
 from app.management.config import AppConfig
