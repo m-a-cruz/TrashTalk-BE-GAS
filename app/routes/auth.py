@@ -1,6 +1,5 @@
 from flask import Blueprint
-import app.controller.auth as auth
-import app.controller.forgot as forgot
+from app.controller import auth, forgot
 from app.management.middleware import handle_errors
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
