@@ -23,7 +23,7 @@ def fetch_gas_chart():
 
 def store_notif(type,message):
     notification = {
-        "timestamp": datetime.datetime.utcnow(),
+        "timestamp": datetime.datetime.now(),
         "data": {
             "type": type,
             "message": message,
