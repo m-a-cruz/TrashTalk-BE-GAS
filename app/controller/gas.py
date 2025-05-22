@@ -2,7 +2,7 @@ from flask import jsonify,Response, request
 from bson import json_util
 from app.management.config import database
 import datetime
-import extensions as socketio
+from extensions import socketio
 
 def record_gas_level():
     data = request.json
