@@ -17,14 +17,14 @@ def fetch_notif():
     return response, 200
     # return 200
 
-# def record_notif_data():
-#     data = request.json
-#     notification = {"timestamp": datetime.datetime.utcnow(),"data": data, }
-#     inserted = database.notification_collection.insert_one(notification)
-#     notification["_id"] = str(inserted.inserted_id)
-#     socketio.emit("new_notification", notification)
+def record_notif_data():
+    data = request.json
+    notification = {"timestamp": datetime.datetime.utcnow(),"data": data, }
+    inserted = database.notification_collection.insert_one(notification)
+    notification["_id"] = str(inserted.inserted_id)
+    socketio.emit("new_notification", notification)
     
-#     return jsonify({"message": "Notification recorded successfully"}), 201
+    return jsonify({"message": "Notification recorded successfully"}), 201
 
 def update_notif_data():
     data = request.json
