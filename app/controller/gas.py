@@ -31,4 +31,4 @@ def store_notif(type,message):
         }
     }
     database.notification_collection.insert_one(notification)
-    socketio.emit("new_notification", notification, broadcast=True)
+    socketio.emit("new_notification", notification)

@@ -13,7 +13,7 @@ import datetime
 def fetch_notif():
     notification = list(database.notification_collection.find().sort("timestamp", -1).limit(50))
     response = Response(json_util.dumps(notification), mimetype='application/json')
-    socketio.emit("notifications", response, broadcast=True)
+    socketio.emit("notifications", response)
     return response, 200
     # return 200
 
@@ -31,7 +31,7 @@ def update_notif_data():
     query = {"_id": ObjectId(data["id"])}
     notification = {"$set": {"data.status": data["status"]}}
     database.notification_collection.update_one(query, notification)
-    socketio.emit("updated_notification", {"id": data["id"], "status": data["status"]}, broadcast=True)
+    socketio.emit("updated_notification", {"id": data["id"], "status": data["status"]})
 
     return jsonify({"message": "Notification updated successfully"}), 201
 
@@ -40,7 +40,7 @@ def update_many_notif():
     query = {"_id": {"$in": [ObjectId(id) for id in data["ids"]]}}
     notification = {"$set": {"data.status": data["status"]}, "$currentDate": {"lastModified": True}}
     database.notification_collection.update_many(query, notification)
-    socketio.emit("updated_notification", {"ids": data["ids"], "status": data["status"]}, broadcast=True)
+    socketio.emit("updated_notification", {"ids": data["ids"], "status": data["status"]})
 
     return jsonify({"message": "Notification updated successfully"}), 201
 
@@ -48,6 +48,6 @@ def delete_notif():
     data = request.json
     query = {"_id": ObjectId(data["id"])}
     database.notification_collection.delete_one(query)
-    socketio.emit("deleted_notification", {"id": data["id"]} , broadcast=True)
+    socketio.emit("deleted_notification", {"id": data["id"]})
     
     return jsonify({"message": "Notification deleted successfully"}), 200
