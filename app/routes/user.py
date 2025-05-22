@@ -2,7 +2,7 @@ from flask import Blueprint
 import app.controller.user as user
 from app.management.middleware import handle_errors
 
-user_bp = Blueprint('auth', __name__, url_prefix='/api/user')
+user_bp = Blueprint('user', __name__, url_prefix='/api/user')
 
 @user_bp.route('/user', methods=['GET'], endpoint='get_user')
 @handle_errors
