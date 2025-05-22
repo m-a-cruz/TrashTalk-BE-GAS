@@ -8,7 +8,7 @@ import sys
 from os.path import abspath, dirname
 sys.path.append(abspath(dirname(__file__)))
 
-from app.routes import auth, gas, insight, camera
+from app.routes import auth, gas, insight, camera, user
 from app.management.middleware import log_request, protected_route
 from extensions import socketio
 from app.management.config import AppConfig
@@ -56,6 +56,7 @@ app.register_blueprint(auth.auth_bp)
 app.register_blueprint(gas.gas_bp)
 app.register_blueprint(insight.insight_bp)
 app.register_blueprint(camera.camera_bp)
+app.register_blueprint(user.user_bp)
 
 # Start the app with SocketIO
 if __name__ == "__main__":

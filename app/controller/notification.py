@@ -22,7 +22,7 @@ def record_notif_data():
     notification = {"timestamp": datetime.datetime.utcnow(),"data": data, }
     inserted = database.notification_collection.insert_one(notification)
     notification["_id"] = str(inserted.inserted_id)
-    socketio.emit("new_notification", notification)
+    socketio.emit("new_notification", json_util.dumps(notification))
     
     return jsonify({"message": "Notification recorded successfully"}), 201
 
