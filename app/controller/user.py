@@ -29,7 +29,7 @@ def update_user():
         payload = jwt.decode(token, cipher.SECRET_KEY, algorithms=["HS256"])
         user_id = payload["sub"]
         user = database.users_collection.find_one({"email": user_id})
-        if not user or not encrypt.check_password(user["password"], data["currentPassword"]): return jsonify({"error": "Invalid credentials"}), 401
+        if "currentPassword" in data or "password" in data and not user or not encrypt.check_password(user["password"], data["currentPassword"]): return jsonify({"error": "Invalid credentials"}), 401
         update_data = {key: value for key, value in data.items() if key != "email"}
         database.users_collection.update_one({"email": user_id}, {"$set": update_data})
         return jsonify({"message": "User updated successfully"}), 200
