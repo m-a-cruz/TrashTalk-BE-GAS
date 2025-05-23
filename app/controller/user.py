@@ -22,9 +22,10 @@ def get_user():
 
 def update_user():
     token = request.cookies.get("access_token_cookie")
-    data = request.json
     if not token:
         return jsonify({"error": "Token is missing"}), 401
+    
+    data = request.json
     try:
         payload = jwt.decode(token, cipher.SECRET_KEY, algorithms=["HS256"])
         user_id = payload["sub"]
