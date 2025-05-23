@@ -3,12 +3,6 @@ from bson import json_util, ObjectId
 from app.management.config import database
 from extensions import socketio
 import datetime
-# from main import socketio
-
-# def fetch_notif():
-#     notification = list(database.notification_collection.find().sort("timestamp", -1))
-#     response = Response(json_util.dumps(notification), mimetype='application/json')
-#     return response, 200
 
 def fetch_notif():
     notification = list(database.notification_collection.find().sort("timestamp", -1).limit(50))
@@ -30,10 +24,18 @@ def update_notif_data():
     data = request.json
     query = {"_id": ObjectId(data["id"])}
     notification = {"$set": {"data.status": data["status"]}}
-    database.notification_collection.update_one(query, notification)
-    socketio.emit("updated_notification", {"id": data["id"], "status": data["status"]})
+    inserted = database.notification_collection.update_one(query, notification)
+    if inserted.modified_count > 0:
+        # Fetch the updated document
+        updated_notification = database.notification_collection.find_one(query)
+        updated_notification["_id"] = str(updated_notification["_id"])  # Serialize ObjectId
 
-    return jsonify({"message": "Notification updated successfully"}), 201
+        # Emit the updated notification
+        socketio.emit("updated_notification", json_util.dumps(updated_notification))
+
+        return jsonify({"message": "Notification updated successfully"}), 201
+    else:
+        return jsonify({"message": "No changes made to the notification"}), 200
 
 def update_many_notif():
     data = request.json

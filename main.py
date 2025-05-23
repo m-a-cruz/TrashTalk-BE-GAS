@@ -13,6 +13,8 @@ from app.management.middleware import log_request, protected_route
 from extensions import socketio
 from app.management.config import AppConfig
 from scheduler import start_scheduler
+from app.management.config import database
+from bson import json_util
 
 # Initialize Flask App
 app = Flask(__name__)
@@ -50,10 +52,6 @@ def before_request():
 def protected():
     return jsonify({"message": "You have access to this route!"}), 200
 
-@socketio.on("connect")
-def handle_connect(): print("Client connected")
-
-#
 # Register blueprints
 app.register_blueprint(auth.auth_bp)
 app.register_blueprint(gas.gas_bp)

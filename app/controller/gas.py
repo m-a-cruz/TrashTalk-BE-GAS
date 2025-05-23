@@ -6,7 +6,7 @@ from extensions import socketio
 
 def record_gas_level():
     data = request.json
-    record = {"timestamp": datetime.datetime.utcnow(),"data": data, }
+    record = {"timestamp": datetime.datetime.now(),"data": data, }
     database.gas_collection.insert_one(record)
     
     if data["type"] == "Safe": store_notif("Safe", "Gas levels are safe.")
