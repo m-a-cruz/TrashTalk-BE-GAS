@@ -1,6 +1,7 @@
 import json
 from flask import request, jsonify
 from app.management.config import database, cipher
+import app.management.encryption as encrypt
 import jwt
 from bson import json_util
 
@@ -24,14 +25,11 @@ def update_user():
     data = request.json
     if not token:
         return jsonify({"error": "Token is missing"}), 401
-    
     try:
         payload = jwt.decode(token, cipher.SECRET_KEY, algorithms=["HS256"])
         user_id = payload["sub"]
         user = database.users_collection.find_one({"email": user_id})
-        if not user:
-            return jsonify({"error": "User does not exist"}), 404
-        
+        if not user or not encrypt.check_password(user["password"], data["currentPassword"]): return jsonify({"error": "Invalid credentials"}), 401
         update_data = {key: value for key, value in data.items() if key != "email"}
         database.users_collection.update_one({"email": user_id}, {"$set": update_data})
         return jsonify({"message": "User updated successfully"}), 200
