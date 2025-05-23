@@ -50,6 +50,9 @@ def before_request():
 def protected():
     return jsonify({"message": "You have access to this route!"}), 200
 
+@socketio.on("connect")
+def handle_connect(): print("Client connected")
+
 #
 # Register blueprints
 app.register_blueprint(auth.auth_bp)
