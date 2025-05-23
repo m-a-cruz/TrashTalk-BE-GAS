@@ -21,23 +21,23 @@ def get_user():
         return jsonify({"error": "Invalid token"}), 401
 
 def update_user():
-    token = request.cookies.get("access_token_cookie")
-    if not token:
-        return jsonify({"error": "Token is missing"}), 401
+    # token = request.cookies.get("access_token_cookie")
+    # if not token:
+    #     return jsonify({"error": "Token is missing"}), 401
     
     data = request.json
     try:
-        payload = jwt.decode(token, cipher.SECRET_KEY, algorithms=["HS256"])
-        user_id = payload["sub"]
-        user = database.users_collection.find_one({"email": user_id})
+        # payload = jwt.decode(token, cipher.SECRET_KEY, algorithms=["HS256"])
+        # user_id = payload["sub"]
+        user = database.users_collection.find_one({"email": data["email"]})
         if data["currentPassword"] in data or data["password"] in data:
             if not user or not encrypt.check_password(user["password"], data["currentPassword"]): 
                 return jsonify({"error": "Invalid credentials"}), 401
             
-            database.users_collection.update_one({"email": user_id}, {"$set": {"password": encrypt.hash_password(data["password"])}})
+            database.users_collection.update_one({"email": data["email"]}, {"$set": {"password": encrypt.hash_password(data["password"])}})
             return jsonify({"message": "Password updated successfully"}), 200
 
-        database.users_collection.update_one({"email": user_id}, {"$set": {"name": data["name"]}})
+        database.users_collection.update_one({"email": data["email"]}, {"$set": {"name": data["name"]}})
         return jsonify({"message": "User updated successfully"}), 200
     except jwt.ExpiredSignatureError:
         return jsonify({"error": "Token has expired"}), 401
