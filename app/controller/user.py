@@ -2,6 +2,7 @@ import json
 from flask import request, jsonify
 from app.management.config import database, cipher
 import jwt
+from bson import json_util
 
 def get_user():
     token = request.cookies.get("access_token_cookie")
@@ -12,7 +13,7 @@ def get_user():
         payload = jwt.decode(token, cipher.SECRET_KEY, algorithms=["HS256"])
         user_id = payload["sub"]
         user = database.users_collection.find_one({"email": user_id})
-        return jsonify({"user": user}), 200
+        return json_util.dumps(user), 200
     except jwt.ExpiredSignatureError:
         return jsonify({"error": "Token has expired"}), 401
     except jwt.InvalidTokenError:
